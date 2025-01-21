@@ -5,7 +5,7 @@ export const getSettingsModalStyles = () => {
     modalContainer: { height: Dimensions.get("screen").height },
     overlay: { backgroundColor: "transparent", flex: 1 },
     bottomsheet: {
-      height: 300,
+      height: 250,
       backgroundColor: "black",
       borderTopLeftRadius: 12,
       borderTopRightRadius: 12,

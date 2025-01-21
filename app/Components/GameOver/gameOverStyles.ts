@@ -1,5 +1,5 @@
 import { DARK_COLOR, PRIMARY_COLOR } from "@/app/constants/AppConstants";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const getGameOverStyles = () => {
   return StyleSheet.create({
@@ -10,7 +10,7 @@ export const getGameOverStyles = () => {
     },
     modal: {
       height: 200,
-      width: Dimensions.get("window").width / 1.5,
+      width: 300,
       backgroundColor: "white",
       borderRadius: 16,
       justifyContent: "space-around",
