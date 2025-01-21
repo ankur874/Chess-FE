@@ -32,3 +32,14 @@
 3. **Start server**:
    ```bash
    npm start
+
+## Images
+<img src="./images/Landing.png" width="200" style="margin: 40px;" /> <img src="./images/PlayerMatching.png" height="200" style="margin: 40px;"  /> <img src="./images/GamePlay.png" height="200" width="200" style="margin: 40px;" /> <img src="./images/Ipad.png"  height="200" width="200" style="margin: 40px;" /> <img src="./images/GameOver-1.png" height="200" width="200" style="margin: 40px;" /> <img src="./images/gameOver-2.png" height="200" width="200" style="margin: 40px;" />
+
+
+
+
+
+
+
+
