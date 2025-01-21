@@ -2,7 +2,7 @@
 
 ## Features
 
-- **Real-time Multiplayer**: Play chess online with friends or random opponents in real-time.
+- **Real-time Multiplayer**: Play chess online with random opponents in real-time.
 - **Minimalistic UI**: Designed with inspiration from the **Nothing** for a clean, modern aesthetic.
 - **In-House Chess Logic**: Custom-built chess logic library for move validation, checks, checkmates, and more.
 - **Sound Effects**: Integrated board piece movement sounds and background music to enhance user experience.
