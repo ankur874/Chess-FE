@@ -10,7 +10,7 @@ export const getGameOverStyles = () => {
     },
     modal: {
       height: 200,
-      width: Dimensions.get("window").width / 3,
+      width: Dimensions.get("window").width / 1.5,
       backgroundColor: "white",
       borderRadius: 16,
       justifyContent: "space-around",
