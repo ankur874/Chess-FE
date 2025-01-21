@@ -6,7 +6,7 @@ export const useSocket = (props?: any) => {
   const { name = "" } = props;
 
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.1.152:8080");
+    const ws = new WebSocket("ws://localhost:8080");
     ws.onopen = () => {
       setSocket(ws);
       ws?.send(JSON.stringify({ type: INIT_GAME, name: name }));
