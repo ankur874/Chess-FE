@@ -1,9 +1,5 @@
 # Chess App Frontend
 
-A **real-time multiplayer chess game** featuring a sleek, minimalistic UI inspired by the **Nothing** design philosophy. The app provides an immersive chess-playing experience with real-time gameplay, in-house chess logic, integrated sound effects, and background music.
-
----
-
 ## Features
 
 - **Real-time Multiplayer**: Play chess online with friends or random opponents in real-time.
