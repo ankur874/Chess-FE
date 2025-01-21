@@ -1,9 +1,8 @@
-
-
 export const INIT_GAME = "init_game";
 export const MOVE = "move";
 export const REVERT_MOVE = "revert_move";
 export const GAME_OVER = "game_over";
+export const LEAVE_GAME = "leave_over";
 
 export const KING = "king";
 export const QUEEN = "queen";
@@ -12,15 +11,33 @@ export const BISHOP = "bishop";
 export const PAWN = "pawn";
 export const ROOK = "rook";
 
+export const WHITE = "white";
+export const BLACK = "black";
 
-export const WHITE = "white"
-export const BLACK = "black"
+export const PRIMARY_COLOR = "white";
+export const SECONDARY_COLOR = "gray";
+export const DARK_COLOR = "black";
 
-export const LIGHT_CHESS_BOX_COLOR = "#E8EDF9";
-export const DARK_CHESS_BOX_COLOR = "#B7C0D8";
-export const CLICKED_SQUARE_COLOR = '#7B61FF';
+export const RANDOM_COLORS_ARRAY: string[] = [
+  "#010009",
+  "#2e231c",
+  "#010b07",
+  "#2a1421",
+  "#2d0b2a",
+  "#274402",
+  "#3f0120",
+  "#170d17",
+  "#392e50",
+  "#434a40",
+];
 
-export const LANDING_PAGE_IMAGE = "https://images.chesscomfiles.com/uploads/v1/images_users/tiny_mce/SamCopeland/phpuTejFE.gif"
+export const getRandomColor = () => {
+  return RANDOM_COLORS_ARRAY[
+    Math.floor(Math.random() * RANDOM_COLORS_ARRAY.length)
+  ];
+};
 
+export const LANDING_PAGE_IMAGE =
+  "https://images.pexels.com/photos/260024/pexels-photo-260024.jpeg";
 
-export const WebSocketUrl = "ws://localhost:8080"
+export const WebSocketUrl = "ws://localhost:8080";

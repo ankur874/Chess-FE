@@ -1,33 +1,35 @@
-import { Button, Text, View } from "react-native";
+import { View } from "react-native";
 import { useSocket } from "../../Hooks/useSocket";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChessManager } from "../../ChessManager/ChessManager";
 import { ChessBoard } from "../../Components/ChessBoard/ChessBoard";
 import { Chess } from "../../ChessManager/ChessModel";
 import { GAME_OVER, INIT_GAME, MOVE } from "../../constants/AppConstants";
 import { IndexPath } from "./GamePlayInterface";
-import { useIsFocused } from "@react-navigation/native";
 import { getGamePlayStyles } from "./GamePlayStyles";
-import { Result } from "@/app/Components/Result/result";
+import { Loader } from "@/app/Components/Loader/loader";
+import { ProfileCard } from "@/app/Components/ProfileCard/profileCard";
+import { PlayBoardSound, stopSound } from "@/app/AudioManager/AudioManager";
+import { useTime } from "@/app/Context/timeContext";
 
-export const GamePlay = () => {
-  const socket = useSocket();
-  const [chessManager, setChessManager] = useState(new ChessManager());
+export const GamePlay = (props: any) => {
+  const socket = useSocket({ name: props.route.params.name ?? "" });
+  const chessManager = useRef<ChessManager>(new ChessManager());
   const [board, setBoard] = useState<string[][]>();
   const [color, setColor] = useState<Chess.Color>(Chess.Color.NONE);
-  console.log("check reredner", color);
   const [isActivePlayer, setActivePlayer] = useState(false);
   const [pendingIndexPath, setPendingIndexPath] = useState<IndexPath>({});
   const [winner, setWinner] = useState<Chess.Color>(Chess.Color.NONE);
+  const [myName, setMyName] = useState<string>(props.route.params.name ?? "");
+  const [opponentName, setOpponentName] = useState<string>("");
+  const { myTime, opponentTime, stopTime, startTime, resetTime } = useTime();
 
   const styles = getGamePlayStyles();
 
   useEffect(() => {
-    console.log("changedd");
     if (!socket) return;
     socket.onmessage = (data) => {
       const message = JSON.parse(data.data);
-      console.log("---", color);
       switch (message.type) {
         case INIT_GAME:
           initilizeGame(message);
@@ -42,32 +44,68 @@ export const GamePlay = () => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    return () => {
+      stopSound();
+      resetTime();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (myTime <= 0 || opponentTime <= 0) {
+      const message = {
+        payload: {
+          color: color,
+          winner:
+            myTime <= 0
+              ? color === "black"
+                ? "white"
+                : "black"
+              : color === "black"
+              ? "black"
+              : "white",
+        },
+      };
+      makeGameOver(message);
+    }
+  }, [myTime, opponentTime]);
+
   const initilizeGame = (message: any) => {
-    setColor(message.payload.color);
-
-    setBoard(chessManager.getBoard());
+    setBoard(chessManager.current.getBoard());
+    setOpponentName(message.payload.opponentName);
     setActivePlayer(message.payload.color === Chess.Color.W);
-
-    console.log("init_game", message, color);
+    setColor(message.payload.color);
+    if (message.payload.color === Chess.Color.W) {
+      startTime(true);
+    } else {
+      startTime(false);
+    }
   };
 
   const makeMove = (message: any) => {
-    console.log("make move", message, color);
     setPendingIndexPath({});
     setActivePlayer(true);
-    chessManager.updateBoardOnValidation(message.payload);
-    setBoard(chessManager.getBoard());
+    chessManager.current.updateBoardOnValidation(message.payload);
+    setBoard(chessManager.current.getBoard());
+    PlayBoardSound();
+    stopTime(false);
+    startTime(true);
   };
 
   const makeGameOver = (message: any) => {
-    console.log("game over", message, color);
     setActivePlayer(false);
     if (message?.payload?.move) {
-      chessManager.updateBoardOnValidation(message.payload.move);
-      setBoard(chessManager.getBoard());
+      chessManager.current.updateBoardOnValidation(message.payload.move);
+      setBoard(chessManager.current.getBoard());
     }
-
     setWinner(message.payload.winner);
+    stopSound();
+    resetTime();
+    setColor(message.payload.color);
+    props?.navigation.navigate("GameOver", {
+      isWinner: message.payload.winner === message.payload.color,
+      message: message.payload.message ?? undefined,
+    });
   };
 
   const getSelectedChessPeiceValue = (rowIndex: number, colIndex: number) => {
@@ -121,15 +159,18 @@ export const GamePlay = () => {
     const currCoordinates = getPeiceCordinateFromIndex(pendingIndexPath);
     const destCoordinates = getPeiceCordinateFromIndex(destIndexPath);
     const moveToBePerformed = `${currCoordinates}$${destCoordinates}`;
-    const isMoveValid = chessManager.move(
+    const isMoveValid = chessManager.current.move(
       color === Chess.Color.W,
       moveToBePerformed
     );
     if (isMoveValid) {
       setActivePlayer(false);
-      setBoard(chessManager.getBoard());
+      setBoard(chessManager.current.getBoard());
       setPendingIndexPath({});
       sendDataToServer(moveToBePerformed);
+      PlayBoardSound();
+      stopTime(true);
+      startTime(false);
     }
   };
 
@@ -157,20 +198,32 @@ export const GamePlay = () => {
 
   return (
     <View style={styles.mainContainer}>
-      {board && isActivePlayer ? (
-        <Text>Your Turn</Text>
-      ) : (
-        board && <Text>Opponent's Turn</Text>
+      {board && (
+        <ProfileCard
+          isActivePlayer={!isActivePlayer}
+          name={opponentName}
+          isOpponentProfile={true}
+          timerInSeconds={opponentTime}
+        />
       )}
-
       {board ? (
-        <ChessBoard board={board} color={color} onPress={onPeicePress} />
+        <ChessBoard
+          board={board}
+          color={color}
+          onPress={onPeicePress}
+          isActivePlayer={isActivePlayer}
+        />
       ) : (
-        <Text>Connecting....</Text>
+        <Loader message="Finding another Player..." loading={!board} />
       )}
-      {winner != Chess.Color.NONE ? (
-        <Result winner={winner} color={color} />
-      ) : null}
+      {board && (
+        <ProfileCard
+          isActivePlayer={isActivePlayer}
+          name={myName}
+          isOpponentProfile={false}
+          timerInSeconds={myTime}
+        />
+      )}
     </View>
   );
 };

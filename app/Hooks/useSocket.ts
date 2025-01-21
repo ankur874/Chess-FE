@@ -1,29 +1,26 @@
-import { useEffect, useState } from "react"
-import { INIT_GAME } from "../constants/AppConstants";
+import { useEffect, useState } from "react";
+import { INIT_GAME, LEAVE_GAME } from "../constants/AppConstants";
 
+export const useSocket = (props?: any) => {
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const { name = "" } = props;
 
-export const useSocket = () => {
-    const [socket, setSocket] = useState<WebSocket | null>(null);
+  useEffect(() => {
+    const ws = new WebSocket("ws://192.168.1.152:8080");
+    ws.onopen = () => {
+      setSocket(ws);
+      ws?.send(JSON.stringify({ type: INIT_GAME, name: name }));
+    };
 
+    ws.onclose = () => {
+      setSocket(null);
+    };
 
-    useEffect(() => {
-        const ws = new WebSocket("https://chess-backend-6heh.onrender.com");
-        ws.onopen = () => {
-            console.log("connected!!!");
-            setSocket(ws);
-            ws?.send(JSON.stringify({ type: INIT_GAME }));
-        }
+    return () => {
+      ws?.send(JSON.stringify({ type: LEAVE_GAME }));
+      ws.close();
+    };
+  }, []);
 
-        ws.onclose = () => {
-            console.log("disconnected!!!");
-            setSocket(null);
-        }
-
-        return () => {
-            ws.close();
-        }
-
-    }, [])
-
-    return socket
-}
+  return socket;
+};

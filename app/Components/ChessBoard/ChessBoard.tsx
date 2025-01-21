@@ -1,8 +1,8 @@
 import { Chess, IndexPath } from "@/app/ChessManager/ChessModel";
 import {
-  CLICKED_SQUARE_COLOR,
-  DARK_CHESS_BOX_COLOR,
-  LIGHT_CHESS_BOX_COLOR,
+  DARK_COLOR,
+  SECONDARY_COLOR,
+  PRIMARY_COLOR,
 } from "@/app/constants/AppConstants";
 import { useEffect, useState } from "react";
 import {
@@ -50,24 +50,23 @@ export const ChessBoard = (props: ChessBoardProps) => {
     setBoard(updatedBoard);
   }, [chessBoard]);
 
-  const styles = getChessBoardStyles(width);
+  const styles = getChessBoardStyles(width, props);
 
   const renderChessBoard = (board: string[][]) => {
     const peiceColor = {
-      oddIndex: LIGHT_CHESS_BOX_COLOR,
-      evenIndex: DARK_CHESS_BOX_COLOR,
+      oddIndex: PRIMARY_COLOR,
+      evenIndex: SECONDARY_COLOR,
     };
-    console.log("inside chessboard", color);
     if (color === Chess.Color.B) {
-      peiceColor.evenIndex = LIGHT_CHESS_BOX_COLOR;
-      peiceColor.oddIndex = DARK_CHESS_BOX_COLOR;
+      peiceColor.evenIndex = PRIMARY_COLOR;
+      peiceColor.oddIndex = SECONDARY_COLOR;
     }
 
     const getPeiceBgColor = (rowIndex: number, colIndex: number) => {
       return rowIndex === selectedPeice.row &&
         colIndex === selectedPeice.col &&
         board[rowIndex][colIndex] != ""
-        ? CLICKED_SQUARE_COLOR
+        ? DARK_COLOR
         : (rowIndex + colIndex) % 2 == 0
         ? peiceColor.evenIndex
         : peiceColor.oddIndex;
@@ -75,10 +74,10 @@ export const ChessBoard = (props: ChessBoardProps) => {
 
     const getTextColor = (rowIndex: number, colIndex: number) => {
       const peiceColor = getPeiceBgColor(rowIndex, colIndex);
-      if (peiceColor === LIGHT_CHESS_BOX_COLOR) {
-        return DARK_CHESS_BOX_COLOR;
+      if (peiceColor === PRIMARY_COLOR) {
+        return SECONDARY_COLOR;
       }
-      return LIGHT_CHESS_BOX_COLOR;
+      return PRIMARY_COLOR;
     };
 
     return (
