@@ -1,50 +1,38 @@
-# Welcome to your Expo app 👋
+# Chess App Frontend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A **real-time multiplayer chess game** featuring a sleek, minimalistic UI inspired by the **Nothing** design philosophy. The app provides an immersive chess-playing experience with real-time gameplay, in-house chess logic, integrated sound effects, and background music.
 
-## Get started
+---
 
-1. Install dependencies
+## Features
 
+- **Real-time Multiplayer**: Play chess online with friends or random opponents in real-time.
+- **Minimalistic UI**: Designed with inspiration from the **Nothing** for a clean, modern aesthetic.
+- **In-House Chess Logic**: Custom-built chess logic library for move validation, checks, checkmates, and more.
+- **Sound Effects**: Integrated board piece movement sounds and background music to enhance user experience.
+- **Responsive Design**: Fully optimized for various screen sizes, including tablets and smartphones.
+
+---
+
+## Installation
+
+### Prerequisites
+- **Node.js** (v14 or higher)
+- **npm** (Node Package Manager)
+- The backend server
+   https://github.com/ankur874/Chess-BE
+
+---
+
+### Steps to Run Locally
+
+1. **Clone the repository**:
+   ```bash
+   git clone <frontend_repo_url>
+   cd <frontend_repo_name>
+2. **Install Dependencies**:
    ```bash
    npm install
-   ```
-
-2. Start the app
-
+3. **Start server**:
    ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+   npm start
