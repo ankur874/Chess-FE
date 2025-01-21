@@ -28,8 +28,8 @@ A **real-time multiplayer chess game** featuring a sleek, minimalistic UI inspir
 
 1. **Clone the repository**:
    ```bash
-   git clone <frontend_repo_url>
-   cd <frontend_repo_name>
+   git clone https://github.com/ankur874/Chess-FE.git
+   cd Chess-FE
 2. **Install Dependencies**:
    ```bash
    npm install
